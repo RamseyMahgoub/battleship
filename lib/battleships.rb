@@ -1,12 +1,13 @@
 class Battleship
 
   def initialize(grid_size)
-    @their_ships = [[Cell.new("b1")]]
-    @their_grid = []
-    @my_grid = []
-    @my_ships = [[Cell.new("a1")]]
     @my_turn = true
+    @my_ships = [[Cell.new("a1")]]
+    @component_ships = [[Cell.new("b1")]]
+    @component_grid = []
+    @my_grid = []
     @grid_size = grid_size
+    
   end
 
   def my_ships
@@ -17,20 +18,20 @@ class Battleship
     @my_grid
   end
 
-  def their_grid
-    @their_grid
+  def component_grid
+    @component_grid
   end
 
   def fire(coord)
-    turn = Turn.new(coord, @their_grid, @my_grid, @my_turn, @grid_size, @their_ships, @my_ships)
+    turn = Turn.new(coord, @component_grid, @my_grid, @my_turn, @grid_size, @component_ships, @my_ships)
     sunken_ship = false
     hit = nil
     result = false
 
     if !turn.error
       if @my_turn
-        ships = @their_ships
-        grid = @their_grid
+        ships = @component_ships
+        grid = @component_grid
       else
         ships = @my_ships
         grid = @my_grid
@@ -70,7 +71,6 @@ class Battleship
     turn.hit = hit
     turn.sunk = sunken_ship
     turn.result = result
-
     turn
   end
 
@@ -82,8 +82,8 @@ end
 class Turn
   attr_accessor :hit, :sunk, :result
 
-  def initialize(coord, their_grid, my_grid, my_turn, grid_size, their_ships, my_ships)
-    if their_grid.size > my_grid.size && my_turn
+  def initialize(coord, component_grid, my_grid, my_turn, grid_size, component_ships, my_ships)
+    if component_grid.size > my_grid.size && my_turn
       @error = 'Not your turn'
     else
       xy = coord_to_x_y(coord)
