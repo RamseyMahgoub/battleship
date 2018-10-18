@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root to: "home#index"
+  get "/game", to: "game#game"
+  get "/game/setup", to: "game#setup"
+  get "/game/finished", to: "game#finished"
 end
