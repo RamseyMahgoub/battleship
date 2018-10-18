@@ -10,8 +10,8 @@ RSpec.describe 'Battleships' do
     expect(battleship.my_grid).to eq([])
   end
 
-  it 'should return an array of hits on component_grid.' do
-    expect(battleship.component_grid).to eq([])
+  it 'should return an array of hits on opponent_grid.' do
+    expect(battleship.opponent_grid).to eq([])
   end
 
   it 'should fire at a grid cell and return miss.' do
@@ -26,10 +26,10 @@ RSpec.describe 'Battleships' do
     expect(battleship.fire("b1").hit).to eq(true)
   end
 
-  it 'should return their grid component_grid with shot history.' do
+  it 'should return their grid opponent_grid with shot history.' do
     battleship.fire("b1")
-    expect(battleship.component_grid[0].hit).to eq(true)
-    expect(battleship.component_grid[0].coord).to eq("b1")
+    expect(battleship.opponent_grid[0].hit).to eq(true)
+    expect(battleship.opponent_grid[0].coord).to eq("b1")
   end
 
   it 'battleships next_turn should make the computer fire and miss.' do
@@ -42,7 +42,7 @@ RSpec.describe 'Battleships' do
   it 'should only allow 1 fire per a turn.' do
     battleship.fire("a1")
     battleship.fire("b1")
-    expect(battleship.component_grid.size).to be(1)
+    expect(battleship.opponent_grid.size).to be(1)
   end
 
   it 'should return "not your turn" if its not your turn.' do

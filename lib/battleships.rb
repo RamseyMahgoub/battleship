@@ -3,11 +3,11 @@ class Battleship
   def initialize(grid_size, my_ships)
     @my_turn = true
     @my_ships = my_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
-    @component_ships = [[Cell.new("b1")]]
-    @component_grid = []
+    @opponent_ships = [[Cell.new("b1")]]
+    @opponent_grid = []
     @my_grid = []
     @grid_size = grid_size
-    
+
   end
 
   def my_ships
@@ -18,20 +18,20 @@ class Battleship
     @my_grid
   end
 
-  def component_grid
-    @component_grid
+  def opponent_grid
+    @opponent_grid
   end
 
   def fire(coord)
-    turn = Turn.new(coord, @component_grid, @my_grid, @my_turn, @grid_size, @component_ships, @my_ships)
+    turn = Turn.new(coord, @opponent_grid, @my_grid, @my_turn, @grid_size, @opponent_ships, @my_ships)
     sunken_ship = false
     hit = nil
     result = false
 
     if !turn.error
       if @my_turn
-        ships = @component_ships
-        grid = @component_grid
+        ships = @opponent_ships
+        grid = @opponent_grid
       else
         ships = @my_ships
         grid = @my_grid
@@ -82,8 +82,8 @@ end
 class Turn
   attr_accessor :hit, :sunk, :result
 
-  def initialize(coord, component_grid, my_grid, my_turn, grid_size, component_ships, my_ships)
-    if component_grid.size > my_grid.size && my_turn
+  def initialize(coord, opponent_grid, my_grid, my_turn, grid_size, opponent_ships, my_ships)
+    if opponent_grid.size > my_grid.size && my_turn
       @error = 'Not your turn'
     else
       xy = coord_to_x_y(coord)
