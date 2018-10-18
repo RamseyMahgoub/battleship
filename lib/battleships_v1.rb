@@ -1,4 +1,4 @@
-class Battleship
+class BattleshipV1
 
   def initialize(grid_size)
     @my_turn = true
@@ -9,7 +9,7 @@ class Battleship
   end
 
   def set_ships(my_ships, opponent_ships)
-    contains_invalid = my_ships.any?{ |ship| 
+    contains_invalid = my_ships.any?{ |ship|
       ship.any? do |coord|
         xy = coord_to_x_y(coord)
         xy[:x] > @grid_size || xy[:y] > @grid_size
@@ -47,7 +47,7 @@ class Battleship
   end
 
   def fire(coord)
-    
+
     if @my_turn
       ships = @opponent_ships
       grid = @opponent_grid

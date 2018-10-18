@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+ship_types = [
+  [ 2, 'Destroyer' ],
+  [ 3, 'Cruiser' ],
+  [ 3, 'Submarine' ],
+  [ 4, 'Battleship' ],
+  [ 5, 'Carrier' ]
+]
+
+ship_types.each do |size, name|
+  ShipType.create( name: name, size: size )
+end

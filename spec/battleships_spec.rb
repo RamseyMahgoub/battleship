@@ -1,6 +1,7 @@
-require 'battleships'
+require 'battleships_v1'
+
 RSpec.describe 'Battleships' do
-  let (:battleship) { Battleship.new(3) }
+  let (:battleship) { BattleshipV1.new(3) }
   before(:each) do
     battleship.set_ships([["a1"]],[["b1"]])
   end
@@ -101,7 +102,7 @@ RSpec.describe 'Battleships' do
 end
 
 RSpec.describe 'Battleship with multiple ships for each player.' do
-  let (:battleship) {Battleship.new(3)}
+  let (:battleship) {BattleshipV1.new(3)}
   before (:each) do
     battleship.set_ships([["a1","b1"],["a2","b2"]],[["c1","c2"],["a3","b3"]])
   end
