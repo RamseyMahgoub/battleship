@@ -1,13 +1,37 @@
 class Battleship
 
-  def initialize(grid_size, my_ships)
+  def initialize(grid_size)
     @my_turn = true
-    @my_ships = my_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
-    @opponent_ships = [[Cell.new("b1")]]
     @opponent_grid = []
     @my_grid = []
     @grid_size = grid_size
 
+  end
+
+  def set_ships(my_ships, opponent_ships)
+    contains_invalid = my_ships.any?{ |ship| 
+      ship.any? do |coord|
+        xy = coord_to_x_y(coord)
+        xy[:x] > @grid_size || xy[:y] > @grid_size
+      end
+    }
+
+    contains_overlapping = my_ships.any? do |ship|
+      opponent_ships.any? do |ship2|
+        ship == ship2
+      end
+    end
+
+    if contains_invalid
+      return "contains invalid ships!"
+    end
+
+    if contains_overlapping
+      return "Overlapping ships!"
+    end
+
+    @my_ships = my_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
+    @opponent_ships = opponent_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
   end
 
   def my_ships
@@ -23,18 +47,24 @@ class Battleship
   end
 
   def fire(coord)
+    
+    if @my_turn
+      ships = @opponent_ships
+      grid = @opponent_grid
+    else
+      ships = @my_ships
+      grid = @my_grid
+    end
+
     turn = Turn.new(coord, @opponent_grid, @my_grid, @my_turn, @grid_size, @opponent_ships, @my_ships)
     sunken_ship = false
     hit = nil
     result = false
 
     if !turn.error
-      if @my_turn
-        ships = @opponent_ships
-        grid = @opponent_grid
-      else
-        ships = @my_ships
-        grid = @my_grid
+
+      if grid.any?{ |cell| cell.coord == coord}
+        return "Already fired here!"
       end
 
       hit = ships.any? do |ship|
@@ -72,6 +102,15 @@ class Battleship
     turn.sunk = sunken_ship
     turn.result = result
     turn
+  end
+
+  def coord_to_x_y(coord)
+    start = 'a'.ord - 1
+
+    {
+      x: coord.chars[1].to_i,
+      y: coord.chars[0].ord - start,
+    }
   end
 
   def next_turn

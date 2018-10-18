@@ -1,6 +1,9 @@
 require 'battleships'
 RSpec.describe 'Battleships' do
-  let (:battleship) { Battleship.new(3, [["a1"]]) }
+  let (:battleship) { Battleship.new(3) }
+  before(:each) do
+    battleship.set_ships([["a1"]],[["b1"]])
+  end
 
   it 'should return an array of one ship.' do
     expect(battleship.my_ships[0][0].coord).to eq("a1")
@@ -68,5 +71,53 @@ RSpec.describe 'Battleships' do
 
   it 'should return the result of true when game has finished' do
     expect(battleship.fire("b1").result).to eq(true)
+  end
+
+  it 'should validate ships returning false for invalid ships.' do
+    expect(battleship.set_ships([["p1"]],[["b1"]])).to eq("contains invalid ships!")
+  end
+
+  it 'should check whether a fired upon coord has already been fired.' do
+    battleship.fire("a2")
+    battleship.next_turn
+    battleship.fire("b3")
+    battleship.next_turn
+    expect(battleship.fire("a2")).to eq("Already fired here!")
+  end
+
+  it 'should check for overlapping ships.' do
+    expect(battleship.set_ships([["b1"]],[["b1"]])).to eq("Overlapping ships!")
+  end
+
+  it 'should run through a basic game.' do
+    battleship.fire("a2")
+    battleship.next_turn
+    battleship.fire("b3")
+    battleship.next_turn
+    expect(battleship.fire("a3").result).to be(false)
+    battleship.next_turn
+    expect(battleship.fire("a1").result).to be(true)
+  end
+end
+
+RSpec.describe 'Battleship with multiple ships for each player.' do
+  let (:battleship) {Battleship.new(3)}
+  before (:each) do
+    battleship.set_ships([["a1","b1"],["a2","b2"]],[["c1","c2"],["a3","b3"]])
+  end
+  it 'should not break.' do
+    battleship.fire("c1")
+    battleship.next_turn
+    battleship.fire("c1")
+    battleship.next_turn
+    battleship.fire("c2")
+    battleship.next_turn
+    battleship.fire("b2")
+    battleship.next_turn
+    battleship.fire("a3")
+    battleship.next_turn
+    battleship.fire("a1")
+    battleship.next_turn
+    expect(battleship.fire("b3").result).to be(true)
   end
 end
