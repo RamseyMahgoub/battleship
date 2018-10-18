@@ -1,6 +1,6 @@
 require 'battleships'
 RSpec.describe 'Battleships' do
-  let (:battleship) { Battleship.new(3) }
+  let (:battleship) { Battleship.new(3, [["a1"]]) }
 
   it 'should return an array of one ship.' do
     expect(battleship.my_ships[0][0].coord).to eq("a1")

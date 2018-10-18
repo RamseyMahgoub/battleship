@@ -1,8 +1,8 @@
 class Battleship
 
-  def initialize(grid_size)
+  def initialize(grid_size, my_ships)
     @my_turn = true
-    @my_ships = [[Cell.new("a1")]]
+    @my_ships = my_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
     @component_ships = [[Cell.new("b1")]]
     @component_grid = []
     @my_grid = []
