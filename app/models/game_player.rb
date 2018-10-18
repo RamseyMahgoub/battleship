@@ -1,3 +1,4 @@
 class GamePlayer < ApplicationRecord
-  belongs_to :grid
+  belongs_to :game
+  has_one :grid
 end
