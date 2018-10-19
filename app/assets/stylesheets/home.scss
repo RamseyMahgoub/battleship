@@ -12,8 +12,11 @@ body {
 
     &--img {
     background-image: url("battleship.png");
+    background-repeat: no-repeat;
     height: 70vh;
     width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
 
     }
     &--title {

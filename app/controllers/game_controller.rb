@@ -4,8 +4,9 @@ class GameController < ApplicationController
   end
   
   def setup
-   @ships = ShipType.all 
-   @ships
+    @ships = ShipType.all 
+    @ships
+    #render json: @ships
   end
 
   def finished
