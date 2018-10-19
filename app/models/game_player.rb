@@ -10,7 +10,9 @@ class GamePlayer < ApplicationRecord
 
     setup[:game_id] = game_id if (game_id)
 
-    GamePlayer.create(setup)
+    game_player = GamePlayer.create(setup)
+    game_player.create_grid
+    game_player
   end
 
   def self.create_computer_player(game_id = nil)
@@ -21,6 +23,13 @@ class GamePlayer < ApplicationRecord
 
     setup[:game_id] = game_id if (game_id)
 
-    GamePlayer.create(setup)
+    game_player = GamePlayer.create(setup)
+    game_player.create_grid
+    game_player
+  end
+
+  def create_grid
+    grid = Grid.create(:game_player => self)
+    grid.create_cells
   end
 end

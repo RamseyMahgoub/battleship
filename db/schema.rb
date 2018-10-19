@@ -10,14 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_091753) do
+ActiveRecord::Schema.define(version: 2018_10_19_121904) do
 
   create_table "cells", force: :cascade do |t|
-    t.string "coord"
     t.boolean "targeted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "grid_id"
+    t.integer "x"
+    t.integer "y"
     t.index ["grid_id"], name: "index_cells_on_grid_id"
   end
 

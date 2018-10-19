@@ -13,7 +13,11 @@ class Game < ApplicationRecord
     game_players.find { |game_player| game_player.human_player }.id
   end
 
+  def computer_game_player_id
+    game_players.find { |game_player| !game_player.human_player }.id
+  end
+
   def get_player(id)
-    game_players.find { |game_player| game_player.id = id }
+    game_players.find(id)
   end
 end

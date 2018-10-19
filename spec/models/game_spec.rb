@@ -19,6 +19,12 @@ RSpec.describe Game, type: :model do
     expect(game.human_game_player_id).to be(game_player.id)
   end
 
+  it 'computer_game_player_id returns the computer id' do
+    game = Game.create
+    game_player = game.game_players.find { |game_player| !game_player.human_player }
+    expect(game.computer_game_player_id).to be(game_player.id)
+  end
+
   it 'create will make 1 "computer" player' do
     game = Game.create
     game_players = game.game_players.select { |game_player| game_player.id != game.human_game_player_id }
