@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_084017) do
+ActiveRecord::Schema.define(version: 2018_10_19_091753) do
 
   create_table "cells", force: :cascade do |t|
     t.string "coord"
@@ -25,12 +25,12 @@ ActiveRecord::Schema.define(version: 2018_10_19_084017) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "game_id"
-    t.boolean "active_turn"
+    t.boolean "active_turn", default: false
+    t.boolean "human_player", default: false
     t.index ["game_id"], name: "index_game_players_on_game_id"
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "activeturn"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
