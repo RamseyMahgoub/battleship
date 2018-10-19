@@ -3,8 +3,8 @@ class Game < ApplicationRecord
 
   def self.create
     game = super
-    game.game_players.create_computer_player
-    game.game_players.create_human_player
+    game.game_players.create_computer_player(game)
+    game.game_players.create_human_player(game)
 
     game
   end
