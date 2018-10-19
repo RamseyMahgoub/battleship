@@ -30,5 +30,6 @@ class GamePlayer < ApplicationRecord
 
   def create_grid
     grid = Grid.create(:game_player => self)
+    grid.create_cells
   end
 end
