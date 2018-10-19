@@ -1,1 +1,5 @@
-<h1>This is the game setup page!</h1>
+<h1> Pick your ship <h1>
+    <% @ships.each do |ship|%>
+          <h3><%= ship.name  %></h3>
+          <h5><%= ship.size %></h5>
+      <% end %>

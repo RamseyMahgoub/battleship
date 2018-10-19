@@ -4,6 +4,8 @@ class GameController < ApplicationController
   end
   
   def setup
+   @ships = ShipType.all 
+   @ships
   end
 
   def finished
