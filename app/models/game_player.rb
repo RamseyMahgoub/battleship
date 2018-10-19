@@ -47,7 +47,6 @@ class GamePlayer < ApplicationRecord
     ship_configs.all? do |ship_config|
       return false if !ship_size_valid?(ship_config)
       return false if !ship_orientation_valid?(ship_config)
-
     end
   end
 
@@ -60,11 +59,11 @@ class GamePlayer < ApplicationRecord
   end
 
   def ship_size_valid?(ship_config)
-    ship_type = ShipType.find(ship_config.ship_type_id)
-    ship_type.size == ship_config.coords.uniq.size
+    ship_type = ShipType.find(ship_config.fetch(:ship_type_id))
+    ship_type.size == ship_config.fetch(:coords).uniq.size
   end
 
   def ship_orientation_valid?(ship_config)
-    ship_config.coords.map { |coord| Cell.from_coord(coord) }
+    ship_config.fetch(:coords).map { |coord| Cell.from_coord(coord) }
   end
 end
