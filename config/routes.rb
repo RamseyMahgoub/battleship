@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get "/game", to: "game#game"
   get "/game/setup", to: "game#setup"
   get "/game/finished", to: "game#finished"
+  post "/game/setup", to: "game#create"
 end
