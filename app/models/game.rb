@@ -3,11 +3,8 @@ class Game < ApplicationRecord
 
   def self.create
     game = super
-    game.game_players.create
-    game.game_players.create(
-      :active_turn => true,
-      :human_player => true,
-    )
+    game.game_players.create_computer_player
+    game.game_players.create_human_player
 
     game
   end
