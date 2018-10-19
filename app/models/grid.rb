@@ -23,4 +23,8 @@ class Grid < ApplicationRecord
       end
     end
   end
+
+  def find_cell_by_coord(coord)
+    cells.find { |cell| cell.coord == coord }
+  end
 end

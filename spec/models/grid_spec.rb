@@ -50,4 +50,10 @@ RSpec.describe Grid, type: :model do
       end
     end
   end
+
+  it 'find_cell_by_coord returns the grid cell for a coord string' do
+    grid = Grid.create(game_player, 2)
+
+    expect(grid.find_cell_by_coord('B1').coord).to eq('B1')
+  end
 end
