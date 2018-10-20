@@ -25,7 +25,7 @@ class GamePlayer < ApplicationRecord
   end
 
   def create_ships(ship_configs)
-    # return false if !ships_valid?(ship_configs)
+    return false if !ships_valid?(ship_configs)
     ship_configs.each { |ship_config| create_ship(ship_config) }
     return true
   end
@@ -44,18 +44,25 @@ class GamePlayer < ApplicationRecord
     return false if !ship_count_valid?(ship_configs)
     return false if !ship_types_valid?(ship_configs)
 
-    ship_configs.all? do |ship_config|
+    return false if !ship_configs.all? do |ship_config|
       return false if !ship_size_valid?(ship_config)
-      return false if !ship_orientation_valid?(ship_config)
+      # return false if !ship_orientation_valid?(ship_config)
+      true
     end
+
+    true
   end
 
-  def ship_count_valid?(ship_config)
-    ShipType.all.size == ship_config.size
+  def ship_count_valid?(ship_configs)
+    ShipType.all.size == ship_configs.size
   end
 
-  def ship_types_valid?(ship_config)
-
+  def ship_types_valid?(ship_configs)
+    ShipType.all.all? do |ship_type|
+      ship_configs.any? do |ship_config|
+        ship_config.fetch(:ship_type_id) == ship_type.id
+      end
+    end
   end
 
   def ship_size_valid?(ship_config)

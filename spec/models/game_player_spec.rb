@@ -50,6 +50,8 @@ RSpec.describe GamePlayer, type: :model do
 
     let(:game_player) { GamePlayer.create(game, true, false) }
 
+
+
     it 'creates ships for the given valid array of ships' do
       ships = [{
         ship_type_id: ship_a.id,
@@ -58,14 +60,65 @@ RSpec.describe GamePlayer, type: :model do
         ship_type_id: ship_b.id,
         coords: ['E4', 'E5', 'E6'],
       }]
-      # TODO
       expect(game_player.create_ships(ships)).to be(true)
+
+      ships.each_with_index do |ship, index|
+        actual = game_player.ships[index]
+        expect(actual.ship_type_id).to be(ship.fetch(:ship_type_id))
+        expect(actual.ship_cells.size).to be(ship.fetch(:coords).size)
+      end
     end
 
-    it 'returns false when no ships exist' do
-      skip
-      ships = []
-      expect(game_player.create_ships(ships)).to be(false)
+    context 'validates' do
+      before do
+        allow(ShipType).to receive(:all).and_return([ship_a, ship_b])
+        allow(ShipType).to receive(:find) do |id|
+          [ship_a, ship_b].find { |ship| ship.id == id }
+        end
+      end
+
+      it 'when no ships exist' do
+        ships = []
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when not all ships exist' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }]
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when not all ship types are supplied' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }, {
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }]
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship sizes are not valid' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'doesnt make any ships in the grid' do
+        ships = []
+        game_player.create_ships(ships)
+
+        expect(game_player.ships.size).to be(0)
+      end
     end
   end
 end
