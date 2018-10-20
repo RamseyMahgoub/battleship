@@ -46,7 +46,8 @@ class GamePlayer < ApplicationRecord
 
     return false if !ship_configs.all? do |ship_config|
       return false if !ship_size_valid?(ship_config)
-      # return false if !ship_orientation_valid?(ship_config)
+      return false if !ship_limits_valid?(ship_config)
+      return false if !ship_orientation_valid?(ship_config)
       true
     end
 
@@ -70,7 +71,22 @@ class GamePlayer < ApplicationRecord
     ship_type.size == ship_config.fetch(:coords).uniq.size
   end
 
+  def ship_limits_valid?(ship_config)
+    cells = ship_config.fetch(:coords).map { |coord| Cell.from_coord(coord) }
+
+    cells.all? do |cell|
+      cell.x.between?(1, grid.size) && cell.y.between?(1, grid.size)
+    end
+  end
+
   def ship_orientation_valid?(ship_config)
-    ship_config.fetch(:coords).map { |coord| Cell.from_coord(coord) }
+    cells = ship_config.fetch(:coords)
+      .sort
+      .map { |coord| Cell.from_coord(coord) }
+
+    connected_x = cells.each_cons(2).all? { |a, b| a.connected_through_x?(b) }
+    connected_y = cells.each_cons(2).all? { |a, b| a.connected_through_y?(b) }
+
+    connected_x || connected_y
   end
 end

@@ -58,7 +58,7 @@ RSpec.describe GamePlayer, type: :model do
         coords: ['A1', 'A2'],
       }, {
         ship_type_id: ship_b.id,
-        coords: ['E4', 'E5', 'E6'],
+        coords: ['H10', 'I10', 'J10'],
       }]
       expect(game_player.create_ships(ships)).to be(true)
 
@@ -108,6 +108,78 @@ RSpec.describe GamePlayer, type: :model do
         }, {
           ship_type_id: ship_b.id,
           coords: ['E4', 'E5'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship orientation is not valid - gap' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5', 'D6'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship orientation is not valid - not straight' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E5', 'E4', 'F4'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship is not within grid cells - x max' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['J1', 'K1'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5', 'E6'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship is not within grid cells - x min' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['?1', 'A1'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5', 'E6'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship is not within grid cells - y max' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A10', 'A11'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5', 'E6'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
+      it 'when ship is not within grid cells - y min' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A0', 'A1'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['E4', 'E5', 'E6'],
         }]
 
         expect(game_player.create_ships(ships)).to be(false)
