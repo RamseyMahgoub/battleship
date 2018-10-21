@@ -185,6 +185,18 @@ RSpec.describe GamePlayer, type: :model do
         expect(game_player.create_ships(ships)).to be(false)
       end
 
+      it 'when ships are overlapping' do
+        ships = [{
+          ship_type_id: ship_a.id,
+          coords: ['A1', 'A2'],
+        }, {
+          ship_type_id: ship_b.id,
+          coords: ['A2', 'B2', 'C2'],
+        }]
+
+        expect(game_player.create_ships(ships)).to be(false)
+      end
+
       it 'doesnt make any ships in the grid' do
         ships = []
         game_player.create_ships(ships)

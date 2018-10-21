@@ -2,6 +2,7 @@ class Ship < ApplicationRecord
   belongs_to :game_player
   belongs_to :ship_type
   has_many :ship_cells
+  has_many :cells, through: :ship_cells
 
   def self.create_on_grid(game_player, ship_type, coords)
     ship = Ship.create(ship_type: ship_type, game_player: game_player)
@@ -10,5 +11,9 @@ class Ship < ApplicationRecord
     end
 
     ship
+  end
+
+  def sunk?
+    cells.all? { |cell| cell.targeted }
   end
 end

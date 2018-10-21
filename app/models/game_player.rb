@@ -43,6 +43,7 @@ class GamePlayer < ApplicationRecord
   def ships_valid?(ship_configs)
     return false if !ship_count_valid?(ship_configs)
     return false if !ship_types_valid?(ship_configs)
+    return false if !ship_uniq_cell_valid?(ship_configs)
 
     return false if !ship_configs.all? do |ship_config|
       return false if !ship_size_valid?(ship_config)
@@ -64,6 +65,11 @@ class GamePlayer < ApplicationRecord
         ship_config.fetch(:ship_type_id) == ship_type.id
       end
     end
+  end
+
+  def ship_uniq_cell_valid?(ship_configs)
+    all_coords = ship_configs.flat_map { |ship_config| ship_config.fetch(:coords) }
+    all_coords.size == all_coords.uniq.size
   end
 
   def ship_size_valid?(ship_config)

@@ -80,4 +80,40 @@ RSpec.describe Cell, type: :model do
     expect(cellB.connected_through_y?(cellC)).to be(false)
     expect(cellC.connected_through_y?(cellB)).to be(false)
   end
+
+  context 'once ships are placed' do
+    let(:ship_type) { ShipType.create(name: 'a', size: 2) }
+    let(:ship) { Ship.create_on_grid(game_player, ship_type, ['B1', 'B2']) }
+
+    let(:cell_with_no_ship) { game_player.grid.find_cell_by_coord('A1') }
+    let(:cell_with_ship) { game_player.grid.find_cell_by_coord('B1') }
+
+    it 'contains_ship? returns if there is not a ship in the cell' do
+      expect(cell_with_no_ship.contains_ship?).to be(false)
+    end
+
+    it 'contains_ship? returns if there is a ship in the cell' do
+      expect(cell_with_ship.id == ship.cells.first.id).to be(true)
+      expect(cell_with_ship.contains_ship?).to be(true)
+    end
+
+    it 'ship returns the ship of the cell if one exists' do
+      expect(cell_with_ship.id == ship.cells.first.id).to be(true)
+      expect(cell_with_ship.ship).to eq(ship)
+    end
+
+    it 'ship returns nil if one does not exist' do
+      expect(cell_with_ship.ship).to eq(nil)
+    end
+
+    # TODO non revealing and revealing
+    context 'non revealing' do
+
+
+      it 'state returns ":empty" if not hit and no ship' do
+        skip
+        expect(cell.state).to be(:empty)
+      end
+    end
+  end
 end

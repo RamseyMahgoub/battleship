@@ -1,5 +1,7 @@
 class Cell < ApplicationRecord
   belongs_to :grid
+  has_one :ship_cell
+  has_one :ship, through: :ship_cell
 
   START_CHAR_CODE = 'A'.ord - 1
 
@@ -21,5 +23,14 @@ class Cell < ApplicationRecord
 
   def connected_through_y?(cell)
     x == cell.x && (y == cell.y - 1 || y == cell.y + 1)
+  end
+
+  def contains_ship?
+    !ship.nil?
+  end
+
+  # TODO
+  def state
+    # if !targeted
   end
 end
