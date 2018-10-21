@@ -29,8 +29,15 @@ class Cell < ApplicationRecord
     !ship.nil?
   end
 
-  # TODO
-  def state
-    # if !targeted
+  def state(revealing = false)
+    if targeted && contains_ship?
+      :hit
+    elsif targeted && !contains_ship?
+      :miss
+    elsif !targeted && contains_ship? && revealing
+      :ship
+    else
+      :empty
+    end
   end
 end
