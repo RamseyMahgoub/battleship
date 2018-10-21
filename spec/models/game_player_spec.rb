@@ -205,4 +205,10 @@ RSpec.describe GamePlayer, type: :model do
       end
     end
   end
+
+  it 'target given a coord, sets cell to be targeted' do
+    game_player = GamePlayer.create_human_player(game)
+    game_player.receive_target('G5')
+    expect(game_player.grid.find_cell_by_coord('G5').targeted).to be(true)
+  end
 end

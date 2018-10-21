@@ -30,6 +30,10 @@ class GamePlayer < ApplicationRecord
     return true
   end
 
+  def receive_target(coord)
+    grid.find_cell_by_coord(coord).update(targeted: true)
+  end
+
   private
 
   def create_ship(ship_config)
