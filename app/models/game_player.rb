@@ -25,7 +25,8 @@ class GamePlayer < ApplicationRecord
   end
 
   # Refactor: game_player is doing alot of ship validation
-  def create_ships(ship_configs)
+  # TODO: test random_config
+  def create_ships(ship_configs = random_config)
     return false if !ships_valid?(ship_configs)
     ship_configs.each { |ship_config| create_ship(ship_config) }
     return true
@@ -44,6 +45,17 @@ class GamePlayer < ApplicationRecord
   end
 
   private
+
+  # TODO: make this actually work...
+  def random_config
+    [
+      { ship_type_id: 1, coords: ['A1', 'A2'] },
+      { ship_type_id: 2, coords: ['B1', 'B2', 'B3'] },
+      { ship_type_id: 3, coords: ['C1', 'C2', 'C3'] },
+      { ship_type_id: 4, coords: ['D1', 'D2', 'D3', 'D4'] },
+      { ship_type_id: 5, coords: ['E1', 'E2', 'E3', 'E4', 'E5'] },
+    ]
+  end
 
   def create_ship(ship_config)
     Ship.create_on_grid(
