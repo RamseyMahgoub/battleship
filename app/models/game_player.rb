@@ -24,6 +24,7 @@ class GamePlayer < ApplicationRecord
     game_player
   end
 
+  # Refactor: game_player is doing alot of ship validation
   def create_ships(ship_configs)
     return false if !ships_valid?(ship_configs)
     ship_configs.each { |ship_config| create_ship(ship_config) }
@@ -31,7 +32,15 @@ class GamePlayer < ApplicationRecord
   end
 
   def receive_target(coord)
-    grid.find_cell_by_coord(coord).update(targeted: true)
+    target = grid.find_cell_by_coord(coord)
+
+    return false if turn_has_targeted
+    return false if target.targeted
+
+    target.update(targeted: true)
+    update(turn_has_targeted: true)
+
+    true
   end
 
   private
