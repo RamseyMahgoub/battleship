@@ -32,7 +32,8 @@ class Game < ApplicationRecord
     end
   end
 
-  def target(coord)
+  # TODO: proper AI coord picking
+  def target(coord = next_ai_coord)
     return false if game_players.any? { |game_player| game_player.ships.size == 0 }
     return false if result
     return get_receive_turn_player.receive_target(coord)
@@ -52,6 +53,10 @@ class Game < ApplicationRecord
   end
 
   private
+
+  def next_ai_coord
+    get_player(computer_game_player_id).grid.cells.find { |cell| !cell.targeted }
+  end
 
   def get_active_turn_player
     game_players.find(&:active_turn)
