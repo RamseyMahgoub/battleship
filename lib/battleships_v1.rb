@@ -30,8 +30,8 @@ class BattleshipV1
       return "Overlapping ships!"
     end
 
-    @my_ships = my_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
-    @opponent_ships = opponent_ships.map{ |ship| ship.map{ |coord| Cell.new(coord)}}
+    @my_ships = my_ships.map{ |ship| ship.map{ |coord| CellV1.new(coord)}}
+    @opponent_ships = opponent_ships.map{ |ship| ship.map{ |coord| CellV1.new(coord)}}
   end
 
   def my_ships
@@ -56,7 +56,7 @@ class BattleshipV1
       grid = @my_grid
     end
 
-    turn = Turn.new(coord, @opponent_grid, @my_grid, @my_turn, @grid_size, @opponent_ships, @my_ships)
+    turn = TurnV1.new(coord, @opponent_grid, @my_grid, @my_turn, @grid_size, @opponent_ships, @my_ships)
     sunken_ship = false
     hit = nil
     result = false
@@ -88,7 +88,7 @@ class BattleshipV1
 
         ship_hit
       end
-      grid << Cell.new(coord,hit)
+      grid << CellV1.new(coord,hit)
 
 
       result = ships.all? do |ship|
@@ -118,7 +118,7 @@ class BattleshipV1
   end
 end
 
-class Turn
+class TurnV1
   attr_accessor :hit, :sunk, :result
 
   def initialize(coord, opponent_grid, my_grid, my_turn, grid_size, opponent_ships, my_ships)
@@ -147,7 +147,7 @@ class Turn
   end
 end
 
-class Cell
+class CellV1
   attr_accessor :hit
 
   def initialize(coord, hit = false)

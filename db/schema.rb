@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_19_121904) do
+ActiveRecord::Schema.define(version: 2018_10_22_092453) do
 
   create_table "cells", force: :cascade do |t|
     t.boolean "targeted", default: false
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2018_10_19_121904) do
     t.integer "game_id"
     t.boolean "active_turn", default: false
     t.boolean "human_player", default: false
+    t.boolean "turn_has_targeted", default: false
     t.index ["game_id"], name: "index_game_players_on_game_id"
   end
 
