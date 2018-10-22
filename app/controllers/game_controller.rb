@@ -12,22 +12,27 @@ class GameController < ApplicationController
       }
     end
     @human_grid = human_player.grid.as_2d do |cell|
-      {state: cell.state(true)}
+      {
+        state: cell.state(true),
+        coord: cell.coord,
+      }
     end
     @comp_grid = comp_player.grid.as_2d do |cell|
       {
         state: cell.state,
-        url: "/game/#{game.id}/fire/#{cell.coord}" 
+        coord: cell.coord,
+        url: "/game/#{game.id}/fire/#{cell.coord}"
       }
     end
+    @game_id = game.id
     @result = game.result
 
   end
-  
+
   def fire
     game = Game.find(params[:id])
     game.target(params[:coord])
-    redirect_to :controller => 'game_controller', :action => 'game' 
+    redirect_to :controller => 'game', :action => 'game', :id => game.id
   end
 
   def change_turn
@@ -35,7 +40,7 @@ class GameController < ApplicationController
     game.change_turn
     game.target
     game.change_turn
-    redirect_to :controller => 'game_controller', :action => 'game'
+    redirect_to :controller => 'game', :action => 'game', :id => game.id
   end
 
   def finished
@@ -64,5 +69,5 @@ class GameController < ApplicationController
     end
     @result = game.result
   end
-  
+
 end

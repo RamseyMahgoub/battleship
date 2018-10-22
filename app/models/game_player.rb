@@ -65,7 +65,9 @@ class GamePlayer < ApplicationRecord
     )
   end
 
+  # TODO: stop more than 5 ships existing
   def ships_valid?(ship_configs)
+    return false if ships.size >= 5
     return false if !ship_count_valid?(ship_configs)
     return false if !ship_types_valid?(ship_configs)
     return false if !ship_uniq_cell_valid?(ship_configs)

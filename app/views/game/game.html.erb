@@ -1,1 +1,64 @@
-<h1>Welcome to the game page!</h1>
+<% @human_ships.each do |ship| %>
+  <div>
+    <h3><%= ship.fetch(:name) %></h3>
+    <% ship.fetch(:cells).each do |state| %>
+      <%= state == :ship ? 'O' : 'X' %>
+    <% end %>
+  </div>
+<% end %>
+
+<%= link_to('Next turn', "/game/#{@game_id}/change_turn", { :method => :post }) %>
+
+<div class="grid">
+  <div class="row">
+    <div class="cell"></div>
+
+    <% @human_grid.first.each do |cell| %>
+      <div class="cell">
+        <%= cell.fetch(:coord).slice(1,2) %>
+      </div>
+    <% end %>
+  </div>
+
+  <% @human_grid.each do |row| %>
+    <div class="row">
+      <div class="cell">
+        <%= row.first.fetch(:coord)[0] %>
+      </div>
+      <% row.each do |cell| %>
+        <div class="cell">
+          <%= cell.fetch(:state) %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="grid">
+  <div class="row">
+    <div class="cell"></div>
+
+    <% @comp_grid.first.each do |cell| %>
+      <div class="cell">
+        <%= cell.fetch(:coord).slice(1,2) %>
+      </div>
+    <% end %>
+  </div>
+
+  <% @comp_grid.each do |row| %>
+    <div class="row">
+      <div class="cell">
+        <%= row.first.fetch(:coord)[0] %>
+      </div>
+      <% row.each do |cell| %>
+        <div class="cell">
+          <% if cell.fetch(:state) == :empty %>
+            <%= link_to('FIRE', cell.fetch(:url), { :method => :post }) %>
+          <% else %>
+            <%= cell.fetch(:state) %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

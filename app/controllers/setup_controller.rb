@@ -5,17 +5,34 @@ class SetupController < ApplicationController
     game = Game.find(params[:game_id])
     comp_player = game.get_player(game.computer_game_player_id)
     game_player = game.get_player(game.human_game_player_id)
+
     ship_configs = ShipType.all.map do |ship_type|
-      coords = param[ship_type.id.to_s.to_sym]
       {
         ship_type_id: ship_type.id,
-        coords: coords
+        coords: []
       }
     end
+
+    game_player.grid.cells.each do |cell|
+      ship_type_id = params[cell.coord.to_sym]
+
+      if ship_type_id != ''
+        ship_config = ship_configs.find do |ship_config|
+          puts ship_config.fetch(:ship_type_id).class
+          puts ship_type_id.to_i.class
+          puts ship_config.fetch(:ship_type_id) == ship_type_id.to_i
+          puts "-----"
+          ship_config.fetch(:ship_type_id) == ship_type_id.to_i
+        end
+        puts ship_config
+        ship_config.fetch(:coords).push(cell.coord)
+      end
+    end
+
     game_player.create_ships(ship_configs)
     comp_player.create_ships
-    redirect_to :controller => 'game_controller', :action => 'game'
-    
+    redirect_to :controller => 'game', :action => 'game', :id => game.id
+
   end
 
   def setup
@@ -23,8 +40,7 @@ class SetupController < ApplicationController
     @ships = ShipType.all
     game_player = game.get_player(game.human_game_player_id)
     @grid = game_player.grid.as_2d
-
-
+    @game_id = game.id
   end
 
 end

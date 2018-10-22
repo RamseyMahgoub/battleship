@@ -5,34 +5,37 @@
     <h5><%= ship.size %></h5>
   <% end %>
 
-<div class = 'grid'>
-  <div class ='row '>
-
-  <div class = 'cell' >
-
-</div>
-<% @grid.first.each do |cell| %>
-  <div class = 'cell' >
-
-  <%= cell.coord.slice(1,2)  %>
-  </div>
-  <% end %>
-
-  </div>
+<%= form_tag("/setup/#{@game_id}") do %>
+  <div><%= submit_tag 'Confirm positions' %></div>
 
 
-  <% @grid.each do |row| %>
+  <div class="grid">
+    <div class="row">
+      <div class="cell"></div>
 
-    <div class = 'row'>
-    <div class = 'cell'>
-     <%= row.first.coord[0] %>
+      <% @grid.first.each do |cell| %>
+        <div class="cell">
+          <%= cell.coord.slice(1,2) %>
+        </div>
+      <% end %>
     </div>
-    <% row.each do |cell| %>
-      <div class = 'cell'>
-       <%= cell.coord %>
+
+    <% @grid.each do |row| %>
+      <div class="row">
+        <div class="cell">
+          <%= row.first.coord[0] %>
+        </div>
+        <% row.each do |cell| %>
+          <div class="cell">
+            <%= select_tag(
+              cell.coord,
+              options_for_select(@ships.map { |ship| [ship.name, ship.id] }),
+              { include_blank: true },
+            ) %>
+          </div>
+        <% end %>
       </div>
     <% end %>
-    </div>
-  <% end %>
-  
-</div>
+  </div>
+
+<% end %>

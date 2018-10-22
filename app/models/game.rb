@@ -55,7 +55,7 @@ class Game < ApplicationRecord
   private
 
   def next_ai_coord
-    get_player(computer_game_player_id).grid.cells.find { |cell| !cell.targeted }
+    get_player(human_game_player_id).grid.cells.find { |cell| !cell.targeted }.coord
   end
 
   def get_active_turn_player
