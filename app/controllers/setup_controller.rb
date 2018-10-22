@@ -18,13 +18,8 @@ class SetupController < ApplicationController
 
       if ship_type_id != ''
         ship_config = ship_configs.find do |ship_config|
-          puts ship_config.fetch(:ship_type_id).class
-          puts ship_type_id.to_i.class
-          puts ship_config.fetch(:ship_type_id) == ship_type_id.to_i
-          puts "-----"
           ship_config.fetch(:ship_type_id) == ship_type_id.to_i
         end
-        puts ship_config
         ship_config.fetch(:coords).push(cell.coord)
       end
     end

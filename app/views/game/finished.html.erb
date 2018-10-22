@@ -1,1 +1,79 @@
-<h1>The game has finished!</h1>
+<div class="ships">
+  <% @human_ships.each do |ship| %>
+    <div class="ship">
+      <h3><%= ship.fetch(:name) %></h3>
+      <% ship.fetch(:cells).each do |state| %>
+        <%= state == :ship ? 'O' : 'X' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  GAME WINNER: <%= @result.human_player ? 'YOU' : 'COMPUTER' %>
+</div>
+
+<%= link_to('home', '/') %>
+
+<div class="grids">
+  <div class="grid">
+    <div class="row">
+      <div class="cell"></div>
+
+      <% @human_grid.first.each do |cell| %>
+        <div class="cell">
+          <%= cell.fetch(:coord).slice(1,2) %>
+        </div>
+      <% end %>
+    </div>
+
+    <% @human_grid.each do |row| %>
+      <div class="row">
+        <div class="cell">
+          <%= row.first.fetch(:coord)[0] %>
+        </div>
+        <% row.each do |cell| %>
+          <div class="cell">
+            <%= cell.fetch(:state) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="grid">
+    <div class="row">
+      <div class="cell"></div>
+
+      <% @comp_grid.first.each do |cell| %>
+        <div class="cell">
+          <%= cell.fetch(:coord).slice(1,2) %>
+        </div>
+      <% end %>
+    </div>
+
+    <% @comp_grid.each do |row| %>
+      <div class="row">
+        <div class="cell">
+          <%= row.first.fetch(:coord)[0] %>
+        </div>
+        <% row.each do |cell| %>
+          <div class="cell">
+            <%= cell.fetch(:state) %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="ships">
+  <% @comp_ships.each do |ship| %>
+    <div class="ship">
+      <h3><%= ship.fetch(:name) %></h3>
+      <% ship.fetch(:cells).each do |state| %>
+        <%= state == :ship ? 'O' : 'X' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

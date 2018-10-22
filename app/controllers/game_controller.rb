@@ -54,11 +54,15 @@ class GameController < ApplicationController
       }
     end
     @human_grid = human_player.grid.as_2d do |cell|
-      {state: cell.state(true)}
+      {
+        state: cell.state(true),
+        coord: cell.coord,
+      }
     end
     @comp_grid = comp_player.grid.as_2d do |cell|
       {
-        state: cell.state(true)
+        state: cell.state(true),
+        coord: cell.coord,
       }
     end
     @comp_ships = comp_player.ships.all.map do |ship|
