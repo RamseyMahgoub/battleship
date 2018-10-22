@@ -1,19 +1,38 @@
 <h1> Pick your ship <h1>
 
-   <% @ships.each do |ship|%>
-       <h3><%= ship.name  %></h3>
-       <h5><%= ship.size %></h5>
+  <% @ships.each do |ship|%>
+    <h3><%= ship.name  %></h3>
+    <h5><%= ship.size %></h5>
+  <% end %>
 
+<div class = 'grid'>
+  <div class ='row '>
+
+  <div class = 'cell' >
+
+</div>
+<% @grid.first.each do |cell| %>
+  <div class = 'cell' >
+
+  <%= cell.coord.slice(1,2)  %>
+  </div>
+  <% end %>
+
+  </div>
+
+
+  <% @grid.each do |row| %>
+
+    <div class = 'row'>
+    <div class = 'cell'>
+     <%= row.first.coord[0] %>
+    </div>
+    <% row.each do |cell| %>
+      <div class = 'cell'>
+       <%= cell.coord %>
+      </div>
     <% end %>
-
-
-    @setup_hash.map do |grids| %>
-        <% grids.map |cell| %>
-        <h3> <%= cell[0].x %> </h3>
-        <h3> <%= cell[0].y %> </h3>
-        <h3> <%= cell[1].x %> </h3>
-        <h3> <%= cell[1].y %> </h3>
-        <% end %>
-        
+    </div>
+  <% end %>
   
-        <% end %
+</div>

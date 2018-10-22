@@ -23,6 +23,8 @@ class SetupController < ApplicationController
     @ships = ShipType.all
     game_player = game.get_player(game.human_game_player_id)
     @grid = game_player.grid.as_2d
+
+
   end
 
 end

@@ -24,28 +24,10 @@ class GameController < ApplicationController
 
   end
   
-<<<<<<< HEAD
-  def setup
-    @game = Game.create
-    @ships = ShipType.all
-    @player_id = @game.human_game_player_id
-    @game_player = @game.get_player(@player_id)
-    @setup_hash = {
-      "ships" => @ships,
-      "grid" => @game_player.grid.as_2d,
-      "game_player" => @game_player,
-      "game" => @game,
-      
-    }
-   # render json: @setup_hash
-
-  @setup_hash
-=======
   def fire
     game = Game.find(params[:id])
     game.target(params[:coord])
     redirect_to :controller => 'game_controller', :action => 'game' 
->>>>>>> 060cd99f6b9803110a40a0f29902cdec4b6f7259
   end
 
   def change_turn
