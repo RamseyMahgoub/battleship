@@ -22,5 +22,50 @@
 
   select {
     width: 100%;
+    font-size: 30px
   }
 }
+
+
+.pickship {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  font-size: 50px;
+  
+}
+
+.shipname {
+  font-family: 'Courier New', Courier, monospace;
+
+}
+
+.shipsize{
+  color: red;
+  font-family: 'Courier New', Courier, monospace;
+  padding-left: 0;
+  margin-left: 0
+}
+
+.ship {
+  display: flex;
+  .shipsize {
+      padding-left: 35px;
+  }
+}
+
+.confirm{
+  text-align: center;
+
+}
+.button {
+  background-color:red;
+  border-radius: 25px;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 20px
+
+}
+
