@@ -41,16 +41,21 @@ RSpec.describe GamePlayer, type: :model do
 
   context 'create_ships' do
     let(:game) do
-       game = Game.new
-       game.save
-       game
+      game = Game.new
+      game.save
+      game
     end
     let(:ship_a) { ShipType.create(name: 'a', size: 2) }
     let(:ship_b) { ShipType.create(name: 'b', size: 3) }
 
     let(:game_player) { GamePlayer.create(game, true, false) }
 
-
+    before do
+      allow(ShipType).to receive(:all).and_return([ship_a, ship_b])
+      allow(ShipType).to receive(:find) do |id|
+        [ship_a, ship_b].find { |ship| ship.id == id }
+      end
+    end
 
     it 'creates ships for the given valid array of ships' do
       ships = [{
@@ -63,20 +68,37 @@ RSpec.describe GamePlayer, type: :model do
       expect(game_player.create_ships(ships)).to be(true)
 
       ships.each_with_index do |ship, index|
-        actual = game_player.ships[index]
+        actual = game.game_players[0].ships[index]
         expect(actual.ship_type_id).to be(ship.fetch(:ship_type_id))
         expect(actual.ship_cells.size).to be(ship.fetch(:coords).size)
       end
     end
 
-    context 'validates' do
-      before do
-        allow(ShipType).to receive(:all).and_return([ship_a, ship_b])
-        allow(ShipType).to receive(:find) do |id|
-          [ship_a, ship_b].find { |ship| ship.id == id }
-        end
-      end
+    it 'creates ships for the given valid array of ships (array not ordered and contains double digits)' do
+      ships = [{
+        ship_type_id: ship_a.id,
+        coords: ['E1', 'F1'],
+      }, {
+        ship_type_id: ship_b.id,
+        coords: ['A10', 'A8', 'A9'],
+      }]
+      expect(game_player.create_ships(ships)).to be(true)
 
+      ships.each_with_index do |ship, index|
+        actual = game.game_players[0].ships[index]
+        expect(actual.ship_type_id).to be(ship.fetch(:ship_type_id))
+        expect(actual.ship_cells.size).to be(ship.fetch(:coords).size)
+      end
+    end
+
+    it 'create_ships randomly places ships if no config supplied' do
+      expect(game_player.create_ships).to be(true)
+      puts (game.game_players[0].ships.map do |ship|
+        ship.cells.map { |cell| cell.coord }.join(', ')
+      end).to_a
+    end
+
+    context 'validates' do
       it 'when no ships exist' do
         ships = []
         expect(game_player.create_ships(ships)).to be(false)

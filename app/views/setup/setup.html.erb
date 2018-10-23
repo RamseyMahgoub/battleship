@@ -6,7 +6,11 @@
   <% end %>
 
 <%= form_tag("/setup/#{@game_id}") do %>
-  <div><%= submit_tag 'Confirm positions' %></div>
+  <div>
+    <%= submit_tag 'Confirm positions' %>
+    <%= check_box_tag 'lucky' %>
+    <%= label_tag 'lucky', 'I\'m feeling lucky' %>
+  </div>
 
 
   <div class="grid grid--setup">

@@ -30,6 +30,12 @@ RSpec.describe Cell, type: :model do
     expect(cell.y).to be(3)
   end
 
+  it 'from_coord returns the cell from an alpha-numeric coord string for 2 digit numbers' do
+    cell = Cell.from_coord('B10')
+    expect(cell.x).to be(2)
+    expect(cell.y).to be(10)
+  end
+
   it 'from_coord returns the cell from an lowercase alpha-numeric coord string' do
     cell = Cell.from_coord('b3')
     expect(cell.x).to be(2)
