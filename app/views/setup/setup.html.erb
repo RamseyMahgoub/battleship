@@ -5,7 +5,7 @@
     <h5><%= ship.size %></h5>
   <% end %>
 
-<%= form_tag("/setup/#{@game_id}") do %>
+<%= form_tag("/setup") do %>
   <div>
     <%= submit_tag 'Confirm positions' %>
     <%= check_box_tag 'lucky' %>

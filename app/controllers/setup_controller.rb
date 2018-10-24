@@ -2,7 +2,7 @@ class SetupController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def create
-    game = Game.find(params[:game_id])
+    game = Game.find_by( uuid: cookies[:game_id])
     comp_player = game.get_player(game.computer_game_player_id)
     game_player = game.get_player(game.human_game_player_id)
 
@@ -31,7 +31,7 @@ class SetupController < ApplicationController
     end
 
     comp_player.create_ships
-    redirect_to :controller => 'game', :action => 'game', :id => game.id
+    redirect_to :controller => 'game', :action => 'game'
 
   end
 
@@ -40,7 +40,7 @@ class SetupController < ApplicationController
     @ships = ShipType.all
     game_player = game.get_player(game.human_game_player_id)
     @grid = game_player.grid.as_2d
-    @game_id = game.id
+    cookies[:game_id] = {value: "#{game.uuid}", expiry: 1.year}
   end
 
 end

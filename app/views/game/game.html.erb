@@ -9,13 +9,13 @@
   <% end %>
 </div>
 
-<%= link_to('Next turn', "/game/#{@game_id}/change_turn", { :method => :post }) %>
+<%= link_to('Next turn', "/game/change_turn", { :method => :post }) %>
 
 <div>
   GAME WINNER:
   <% if @result %>
     <%= @result.human_player ? 'YOU' : 'COMPUTER' %>
-    <%= link_to('See summary', "/game/#{@game_id}/finished")%>
+    <%= link_to('See summary', "/game/finished")%>
   <% else %>
     ?????
   <% end %>

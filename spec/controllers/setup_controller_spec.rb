@@ -12,7 +12,7 @@ RSpec.describe SetupController, type: :controller do
       expect(assigns(:grid).length).to eql(10)
     end
 
-    it "returns the required instance variable grid needed to setup the game." do
+    it "returns the required instance variable game_id needed to setup the game." do
       get :setup
       expect(assigns(:game_id).class).to be(Fixnum)
     end

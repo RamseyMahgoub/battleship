@@ -2,7 +2,7 @@ class Game < ApplicationRecord
   has_many :game_players
 
   def self.create
-    game = super
+    game = super(uuid: SecureRandom.urlsafe_base64(16))
     game.game_players.create_computer_player(game)
     game.game_players.create_human_player(game)
 
