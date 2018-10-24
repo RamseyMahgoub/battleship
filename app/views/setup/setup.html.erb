@@ -12,6 +12,11 @@
     <%= label_tag 'lucky', 'I\'m feeling lucky' %>
   </div>
 
+  <% if flash[:error] %>
+      <div id="alert">
+         <%= flash[:error] %> 
+      </div>
+  <% end %>
 
   <div class="grid grid--setup">
     <div class="row">

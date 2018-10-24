@@ -30,13 +30,17 @@ class GameController < ApplicationController
 
   def fire
     game = Game.find_by( uuid: cookies[:game_id])
-    game.target(params[:coord])
+    flash[:error] = "Cannons disabled, the battle is over!!." if game.result  && !game.target(params[:coord]) 
+    flash[:error] = "Already Fired!! Please click Next turn." if !game.result  && !game.target(params[:coord]) 
     redirect_to :controller => 'game', :action => 'game'
   end
 
   def change_turn
     game = Game.find_by( uuid: cookies[:game_id])
-    game.change_turn
+    if !game.change_turn
+      flash[:error] = "It's your turn to fire...." 
+      return redirect_to :controller => 'game', :action => 'game'
+    end
     game.target
     game.change_turn
     redirect_to :controller => 'game', :action => 'game'

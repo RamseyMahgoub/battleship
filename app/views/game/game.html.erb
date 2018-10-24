@@ -8,8 +8,9 @@
     </div>
   <% end %>
 </div>
-
+<% if !@result %>
 <%= link_to('Next turn', "/game/change_turn", { :method => :post }) %>
+<% end %>
 
 <div>
   GAME WINNER:
@@ -20,6 +21,12 @@
     ?????
   <% end %>
 </div>
+
+<% if flash[:error] %>
+      <div id="alert">
+         <%= flash[:error] %> 
+      </div>
+  <% end %>
 
 <div class="grids">
   <div class="grid">
