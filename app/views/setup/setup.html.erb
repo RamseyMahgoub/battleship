@@ -1,4 +1,4 @@
-<h1 class = 'pickship'>🚢 Pick your ship🚢 <h1>
+<h1 class = 'pickship'>🚢   Place your Battleships 🚢 <h1>
 
 <div class = 'ships'>
 	<% @ships.each do |ship|%>
@@ -10,12 +10,15 @@
 </div>
 
 
-  <div class = 'confirm' >
-    <%= form_tag("/setup/#{@game_id}") do %>
-    <button class="button"> Confirm Position </button>
- </div>
+<div class = 'confirm' >
+  <%= form_tag("/setup/#{@game_id}") do %>
+  <button class="button"> Confirm Position </button>
+  <%= check_box_tag 'lucky' %>
+    <%= label_tag 'lucky', 'I\'m feeling lucky' %>
+</div>
 
 <br>
+
   <div class="grid grid--setup">
     <div class="row">
       <div class="cell"></div>

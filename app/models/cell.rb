@@ -9,7 +9,7 @@ class Cell < ApplicationRecord
     chars = coord.chars
     Cell.new(
       x: chars[0].upcase.ord - START_CHAR_CODE,
-      y: chars[1].to_i,
+      y: chars.drop(1).join.to_i,
     )
   end
 

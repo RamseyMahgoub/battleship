@@ -12,7 +12,6 @@ class Grid < ApplicationRecord
     cells.max_by { |cell| cell.x }.x
   end
 
-  # TODO: test
   def as_2d(&block)
     cells.map(&block).each_slice(size).to_a
   end

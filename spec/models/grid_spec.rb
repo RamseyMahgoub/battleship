@@ -51,6 +51,26 @@ RSpec.describe Grid, type: :model do
     end
   end
 
+  it 'as_2d takes a block which can mutate the cells in the 2d array' do
+    grid = Grid.create(game_player, 2)
+
+    actual = grid.as_2d do |cell|
+      cell.coord
+    end
+
+    expected = [['A1', 'A2'],['B1', 'B2']]
+
+    expect(actual.length).to eq(2)
+    expect(actual[0].length).to eq(2)
+    expect(actual[1].length).to eq(2)
+
+    actual.each_with_index do |actual_row, row_index|
+      actual_row.each_with_index do |actual_coord, column_index|
+        expect(actual_coord).to eq(expected[row_index][column_index])
+      end
+    end
+  end
+
   it 'find_cell_by_coord returns the grid cell for a coord string' do
     grid = Grid.create(game_player, 2)
 

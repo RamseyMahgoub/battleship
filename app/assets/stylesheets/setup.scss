@@ -1,6 +1,7 @@
 .grid {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
+ 
 }
 
 .row {
@@ -9,6 +10,7 @@
 }
 
 .grid--setup {
+  text-align: center;
   .cell {
     height: 5em;
     width: 5em;
@@ -25,7 +27,6 @@
     font-size: 30px
   }
 }
-
 
 .pickship {
   font-family: 'Poppins', sans-serif;
@@ -69,3 +70,13 @@
 
 }
 
+.feelinglucky{
+  text-align: center;
+  background-color:red;
+  border-radius: 25px;
+  color: white;
+  padding: 15px 30px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-left: 20px
+}

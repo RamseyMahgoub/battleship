@@ -24,8 +24,7 @@ class GamePlayer < ApplicationRecord
     game_player
   end
 
-  # Refactor: game_player is doing alot of ship validation
-  # TODO: test random_config
+  # Refactor: game_player is doing alot of ship validation and ship stuff
   def create_ships(ship_configs = random_config)
     return false if !ships_valid?(ship_configs)
     ship_configs.each { |ship_config| create_ship(ship_config) }
@@ -46,15 +45,40 @@ class GamePlayer < ApplicationRecord
 
   private
 
-  # TODO: make this actually work...
   def random_config
-    [
-      { ship_type_id: 1, coords: ['A1', 'A2'] },
-      { ship_type_id: 2, coords: ['B1', 'B2', 'B3'] },
-      { ship_type_id: 3, coords: ['C1', 'C2', 'C3'] },
-      { ship_type_id: 4, coords: ['D1', 'D2', 'D3', 'D4'] },
-      { ship_type_id: 5, coords: ['E1', 'E2', 'E3', 'E4', 'E5'] },
-    ]
+    ship_configs = []
+
+    ShipType.all.each do |ship_type|
+      coords_invalid = true
+      ship_config = {
+        ship_type_id: ship_type.id,
+        coords: [],
+      }
+
+      while coords_invalid
+        start_cell = grid.cells[rand(0..(grid.cells.size - 1))]
+        orientation = [:horizontal, :vertical][rand(0..1)]
+        ship_config[:coords] = fill_out_ship_coords(start_cell, orientation, ship_type.size)
+
+        if ship_limits_valid?(ship_config) &&
+          ship_uniq_cell_valid?(ship_configs + [ship_config])
+          coords_invalid = false
+        end
+      end
+
+      ship_configs.push(ship_config)
+    end
+
+    ship_configs
+  end
+
+  def fill_out_ship_coords(start_cell, orientation, size)
+    (0..(size - 1)).map do |index|
+      Cell.new(
+        x: start_cell.x + (orientation == :horizontal ? index : 0),
+        y: start_cell.y + (orientation == :vertical ? index : 0),
+      ).coord
+    end
   end
 
   def create_ship(ship_config)
@@ -65,9 +89,8 @@ class GamePlayer < ApplicationRecord
     )
   end
 
-  # TODO: stop more than 5 ships existing
   def ships_valid?(ship_configs)
-    return false if ships.size >= 5
+    return false if !ship_existing_count_empty?
     return false if !ship_count_valid?(ship_configs)
     return false if !ship_types_valid?(ship_configs)
     return false if !ship_uniq_cell_valid?(ship_configs)
@@ -80,6 +103,10 @@ class GamePlayer < ApplicationRecord
     end
 
     true
+  end
+
+  def ship_existing_count_empty?
+    ships.size == 0
   end
 
   def ship_count_valid?(ship_configs)
@@ -114,8 +141,9 @@ class GamePlayer < ApplicationRecord
 
   def ship_orientation_valid?(ship_config)
     cells = ship_config.fetch(:coords)
-      .sort
       .map { |coord| Cell.from_coord(coord) }
+      .sort_by(&:x)
+      .sort_by(&:y)
 
     connected_x = cells.each_cons(2).all? { |a, b| a.connected_through_x?(b) }
     connected_y = cells.each_cons(2).all? { |a, b| a.connected_through_y?(b) }
