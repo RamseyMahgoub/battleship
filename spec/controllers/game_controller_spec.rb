@@ -108,10 +108,10 @@ RSpec.describe GameController, type: :controller do
     "J10"=>"",
     "id"=> 30  
 }
-    it "should return a status code of 200 for a successful GET request." do
-      game = Game.create.id
-      get :game, params: {id: game }
-      expect(response.status).to eq(200)
+    it "should redirect to home page if no game has been setup." do
+      game = Game.create
+      get :game
+      expect(response).to redirect_to '/'
     end
 
     it "should return an array for instance variable human_grid of length 10." do
@@ -154,10 +154,9 @@ RSpec.describe GameController, type: :controller do
 
       it 'should redirect to game controller.' do
         game = Game.create
-        id = game.id
-        response_obj[:id] = id
-        post :fire, params: response_obj
-        expect(response).to redirect_to "/game/#{id}"    
+        cookies[:game_id] = "f-0TFdKknRqBy9xNXqf_oQ"
+        post :fire
+        expect(response).to redirect_to "/game"    
       end
       
     end

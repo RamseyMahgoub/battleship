@@ -53,7 +53,9 @@
   }
 
   &--hit {
-    background-color: darkgray !important;
+    background: url(/hit.gif);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 
   &__sunk {
@@ -64,10 +66,10 @@
   }
 
   &__hit {
-    border-radius: 100%;
-    width: 0em;
-    height: 0em;
-    border: solid 0.6em red;
+    // border-radius: 100%;
+    // width: 0em;
+    // height: 0em;
+    // border: solid 0.6em red;
   }
 
   &__miss {
