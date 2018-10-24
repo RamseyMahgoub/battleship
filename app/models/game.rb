@@ -62,6 +62,12 @@ class Game < ApplicationRecord
     end
   end
 
+  def setup?
+    game_players.all? do |game_player|
+      game_player.ships.size == ShipType.all.size
+    end
+  end
+
   private
 
   def aligned_connecting_options(cell)
