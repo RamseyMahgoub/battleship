@@ -13,9 +13,16 @@
 <div class = 'confirm' >
   <%= form_tag("/setup/#{@game_id}") do %>
   <button class="button"> Confirm Position </button>
-  <%= check_box_tag 'lucky' %>
-    <%= label_tag 'lucky', 'I\'m feeling lucky' %>
 </div>
+
+<div class = 'feelinglucky' >
+<%= check_box_tag 'lucky' %>
+<%= label_tag 'lucky', 'I\'m feeling lucky' %>
+</div>
+
+<div>
+
+
 
 <br>
 

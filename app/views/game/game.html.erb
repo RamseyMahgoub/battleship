@@ -9,7 +9,10 @@
   <% end %>
 </div>
 
+<div class = 'nextturn'>
 <%= link_to('Next turn', "/game/#{@game_id}/change_turn", { :method => :post }) %>
+</div>
+
 
 <div>
   GAME WINNER:
