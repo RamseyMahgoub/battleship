@@ -3,6 +3,9 @@ class GameController < ApplicationController
 
   def game
     game = Game.find_by( uuid: cookies[:game_id])
+    if !game || !game.setup?
+      return redirect_to controller: 'home', action: 'index'
+    end
     human_player = game.get_player(game.human_game_player_id)
     comp_player = game.get_player(game.computer_game_player_id)
     @human_ships = human_player.ships.all.map do |ship|
