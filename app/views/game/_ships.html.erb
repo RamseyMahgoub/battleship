@@ -1,0 +1,16 @@
+<div class="ships">
+  <% ships.each do |ship| %>
+    <% if ship.fetch(:sunk) || !sunk_only %>
+      <div class="ship">
+        <h4><%= ship.fetch(:name) %></h4>
+        <div class="row">
+          <% ship.fetch(:cells).each do |state| %>
+            <div class="cell cell--<%= state.to_s %>">
+              <span class="cell__<%= state.to_s %>"></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+</div>
