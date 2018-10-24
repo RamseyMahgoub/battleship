@@ -76,4 +76,8 @@ RSpec.describe Grid, type: :model do
 
     expect(grid.find_cell_by_coord('B1').coord).to eq('B1')
   end
+
+  it 'has a default size const' do
+    expect(Grid.default_size).to be(10)
+  end
 end

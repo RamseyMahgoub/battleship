@@ -93,9 +93,6 @@ RSpec.describe GamePlayer, type: :model do
 
     it 'create_ships randomly places ships if no config supplied' do
       expect(game_player.create_ships).to be(true)
-      puts (game.game_players[0].ships.map do |ship|
-        ship.cells.map { |cell| cell.coord }.join(', ')
-      end).to_a
     end
 
     context 'validates' do

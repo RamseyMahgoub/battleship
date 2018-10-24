@@ -184,7 +184,148 @@ RSpec.describe Game, type: :model do
     expect(game_player_2.active_turn).to be(true)
     expect(game_player_1.active_turn).to be(false)
   end
-end
 
-# TODO
-# AI, random ship positing and AI targeting
+  context 'AI targeting 1 ship of 2 cells' do
+    let(:game) { Game.create(3) }
+    let(:ship_type) { ShipType.create(name: 'a', size: 2) }
+    let(:game_player) { game.game_players[1] }
+
+    before do
+      allow(ShipType).to receive(:all).and_return([ship_type])
+      allow(ShipType).to receive(:find).and_return(ship_type)
+    end
+
+    it 'returns a valid random cell' do
+      game_player.create_ships([{
+        ship_type_id: ship_type.id,
+        coords: ['B1', 'B2'],
+      }])
+
+      ai_coord_options = game.ai_coord_options
+      expect(ai_coord_options).to contain_exactly('A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3')
+    end
+
+    context 'returns a coord within 1 of a hit horizontally or vertically' do
+      it 'when all 4 options are open' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B1', 'B2'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B1', 'B3', 'A2', 'C2')
+      end
+
+      it 'but not off right or top' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['C1', 'C2'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('C1').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B1', 'C2')
+      end
+
+      it 'but not off left or bottom' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['A2', 'A3'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('A3').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('A2', 'B3')
+      end
+
+      it 'but not previously hit cells' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B1', 'B2'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B1').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('A1').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B2', 'C1')
+      end
+    end
+
+    it 'ignores sunken ships for targeting' do
+      game_player.create_ships([{
+        ship_type_id: ship_type.id,
+        coords: ['B1', 'B2'],
+      }])
+
+      game.game_players[1].grid.find_cell_by_coord('B1').update(targeted: true)
+      game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+      expect(game.ai_coord_options).to contain_exactly('A1', 'A2', 'A3', 'B3', 'C1', 'C2', 'C3')
+    end
+  end
+
+  context 'AI targeting 1 ship of 3 cells' do
+    let(:game) { Game.create(4) }
+    let(:ship_type) { ShipType.create(name: 'a', size: 3) }
+    let(:game_player) { game.game_players[1] }
+
+    before do
+      allow(ShipType).to receive(:all).and_return([ship_type])
+      allow(ShipType).to receive(:find).and_return(ship_type)
+    end
+
+    context 'when 2 hits in a row returns the next in the row' do
+      it 'either end vertically' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B2', 'B3', 'B4'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('B3').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B1', 'B4')
+      end
+
+      it 'either end horizontally' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B2', 'C2', 'D2'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('C2').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('A2', 'D2')
+      end
+
+      it 'at the non edge end vertically' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B2', 'B3', 'B4'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B3').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('B4').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B2')
+      end
+
+      it 'at the non edge end horizontally' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['A2', 'B2', 'C2'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('A2').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('C2')
+      end
+
+      it 'at the empty end, ignoring existing misses' do
+        game_player.create_ships([{
+          ship_type_id: ship_type.id,
+          coords: ['B2', 'B3', 'B4'],
+        }])
+
+        game.game_players[1].grid.find_cell_by_coord('B1').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('B2').update(targeted: true)
+        game.game_players[1].grid.find_cell_by_coord('B3').update(targeted: true)
+        expect(game.ai_coord_options).to contain_exactly('B4')
+      end
+    end
+  end
+end
