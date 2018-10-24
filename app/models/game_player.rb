@@ -3,24 +3,24 @@ class GamePlayer < ApplicationRecord
   has_one :grid
   has_many :ships
 
-  def self.create(game, active_turn, human_player)
+  def self.create(game, active_turn, human_player, grid_size = nil)
     game_player = super({
       game: game,
       active_turn: active_turn,
       human_player: human_player,
     })
 
-    game_player.grid = Grid.create(game_player)
+    game_player.grid = Grid.create(game_player, grid_size)
     game_player
   end
 
-  def self.create_human_player(game)
-    game_player = GamePlayer.create(game, true, true)
+  def self.create_human_player(game, grid_size = nil)
+    game_player = GamePlayer.create(game, true, true, grid_size)
     game_player
   end
 
-  def self.create_computer_player(game)
-    game_player = GamePlayer.create(game, false, false)
+  def self.create_computer_player(game, grid_size = nil)
+    game_player = GamePlayer.create(game, false, false, grid_size)
     game_player
   end
 
@@ -56,8 +56,8 @@ class GamePlayer < ApplicationRecord
       }
 
       while coords_invalid
-        start_cell = grid.cells[rand(0..(grid.cells.size - 1))]
-        orientation = [:horizontal, :vertical][rand(0..1)]
+        start_cell = grid.cells.sample
+        orientation = [:horizontal, :vertical].sample
         ship_config[:coords] = fill_out_ship_coords(start_cell, orientation, ship_type.size)
 
         if ship_limits_valid?(ship_config) &&
@@ -134,6 +134,7 @@ class GamePlayer < ApplicationRecord
   def ship_limits_valid?(ship_config)
     cells = ship_config.fetch(:coords).map { |coord| Cell.from_coord(coord) }
 
+    # TODO: should grid have if a cell is valid, this is repeated in game ai targeting
     cells.all? do |cell|
       cell.x.between?(1, grid.size) && cell.y.between?(1, grid.size)
     end

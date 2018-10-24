@@ -29,8 +29,18 @@ class Cell < ApplicationRecord
     !ship.nil?
   end
 
+  def contains_sunk_ship?
+    if ship
+      ship.sunk?
+    else
+      false
+    end
+  end
+
   def state(revealing = false)
-    if targeted && contains_ship?
+    if contains_sunk_ship?
+      :sunk
+    elsif targeted && contains_ship?
       :hit
     elsif targeted && !contains_ship?
       :miss
