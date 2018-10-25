@@ -62,12 +62,19 @@ class Game < ApplicationRecord
     end
   end
 
+  def setup?
+    game_players.all? do |game_player|
+      game_player.ships.size == ShipType.all.size
+    end
+  end
+
   private
 
   def aligned_connecting_options(cell)
     grid = get_player(human_game_player_id).grid
     options = random_connecting_options(cell, :hit)
     aligned_options = []
+    existing_hits = [cell]
 
     connecting_cell = options
       .map { |coord| grid.find_cell_by_coord(coord) }
@@ -98,10 +105,23 @@ class Game < ApplicationRecord
         aligned_options.push(current_cell.coord)
         transform = { x: -transform.fetch(:x), y: -transform.fetch(:y) }
         ends_found += 1
+      elsif current_cell_state == :hit
+        existing_hits.push(current_cell)
       end
     end
 
-    return random_connecting_options(cell) if aligned_options.size == 0
+    if aligned_options.size == 0
+      fallback_options = []
+      counter = 0
+
+      while fallback_options.size == 0 && counter < existing_hits.size
+        fallback_options = random_connecting_options(existing_hits[counter])
+        counter += 1
+      end
+
+      return random_options if fallback_options.size == 0
+      return fallback_options
+    end
 
     aligned_options
   end

@@ -24,12 +24,15 @@ class SetupController < ApplicationController
           ship_config.fetch(:coords).push(cell.coord)
         end
       end
-
-      game_player.create_ships(ship_configs)
+      
+      unless game_player.create_ships(ship_configs)
+        flash[:error] = "Incorrect ship layout, please place them again!"
+        return redirect_to :action => "create"
+      end
+      
     else
       game_player.create_ships
     end
-
     comp_player.create_ships
     redirect_to :controller => 'game', :action => 'game'
 

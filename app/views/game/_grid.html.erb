@@ -1,0 +1,32 @@
+<div class="grid">
+  <div class="row">
+    <div class="cell"></div>
+
+    <% grid.first.each do |cell| %>
+      <div class="cell">
+        <span><%= cell.fetch(:coord).slice(1,2) %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <% grid.each do |row| %>
+    <div class="row">
+      <div class="cell">
+        <span><%= row.first.fetch(:coord)[0] %></span>
+      </div>
+      <% row.each do |cell| %>
+        <% if cell.fetch(:state) == :empty && fireable %>
+          <%= link_to(
+            content_tag(:span, '', class: "cell--fire"),
+            cell.fetch(:url),
+            { :method => :post, :class => 'cell cell--fireable'}
+          ) %>
+        <% else %>
+          <div class="cell cell--<%= cell.fetch(:state).to_s %>">
+            <span class="cell__<%= cell.fetch(:state).to_s %>"></span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

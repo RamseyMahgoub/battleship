@@ -1,14 +1,5 @@
-<div class="ships">
-  <% @human_ships.each do |ship| %>
-    <div class="ship">
-      <h3><%= ship.fetch(:name) %></h3>
-      <% ship.fetch(:cells).each do |state| %>
-        <%= state == :ship ? 'O' : 'X' %>
-      <% end %>
-    </div>
-  <% end %>
-</div>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <div class = 'nextturn'>
 <%= link_to('Next turn', "/game/#{@game_id}/change_turn", { :method => :post }) %>
@@ -17,6 +8,8 @@
 =======
 <%= link_to('Next turn', "/game/change_turn", { :method => :post }) %>
 >>>>>>> 80ce086193d6d8afe4d56d078c265ca6830527f8
+=======
+>>>>>>> b60a092dfb4284b3604acefbbe0ebeb6609536d1
 
 <div>
   GAME WINNER:
@@ -28,62 +21,33 @@
   <% end %>
 </div>
 
-<div class="grids">
-  <div class="grid">
-    <div class="row">
-      <div class="cell"></div>
+<% if flash[:error] %>
+      <div id="alert">
+         <%= flash[:error] %>
+      </div>
+  <% end %>
 
-      <% @human_grid.first.each do |cell| %>
-        <div class="cell">
-          <span><%= cell.fetch(:coord).slice(1,2) %></span>
-        </div>
+<div class="game-container">
+  <%= render partial: 'ships', locals: { ships: @human_ships, sunk_only: false } %>
+  <div class="grids">
+    <div>
+      <%= render partial: 'grid', locals: { grid: @human_grid, fireable: false } %>
+      <div class="player-container">
+        <h2>You</h2>
+      </div>
+    </div>
+    <div class="next-turn">
+      <% if !@result %>
+        <%= link_to('Next turn', "/game/change_turn", { :method => :post }) %>
       <% end %>
     </div>
-
-    <% @human_grid.each do |row| %>
-      <div class="row">
-        <div class="cell">
-          <span><%= row.first.fetch(:coord)[0] %></span>
-        </div>
-        <% row.each do |cell| %>
-          <div class="cell cell--<%= cell.fetch(:state).to_s %>">
-            <span class="cell__<%= cell.fetch(:state).to_s %>"></span>
-          </div>
-        <% end %>
+    <div>
+      <%= render partial: 'grid', locals: { grid: @comp_grid, fireable: true } %>
+      <div class="player-container">
+        <h2>The Beach (Computer)</h2>
+        <div class="the-beach"></div>
       </div>
-    <% end %>
-  </div>
-
-  <div class="grid">
-    <div class="row">
-      <div class="cell"></div>
-
-      <% @comp_grid.first.each do |cell| %>
-        <div class="cell">
-          <span><%= cell.fetch(:coord).slice(1,2) %></span>
-        </div>
-      <% end %>
     </div>
-
-    <% @comp_grid.each do |row| %>
-      <div class="row">
-        <div class="cell">
-          <span><%= row.first.fetch(:coord)[0] %></span>
-        </div>
-        <% row.each do |cell| %>
-          <% if cell.fetch(:state) == :empty %>
-            <%= link_to(
-              content_tag(:span, '', class: "cell--fire"),
-              cell.fetch(:url),
-              { :method => :post, :class => 'cell cell--fireable'}
-            ) %>
-          <% else %>
-            <div class="cell cell--<%= cell.fetch(:state).to_s %>">
-              <span class="cell__<%= cell.fetch(:state).to_s %>"></span>
-            </div>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
   </div>
+  <%= render partial: 'ships', locals: { ships: @comp_ships, sunk_only: true } %>
 </div>

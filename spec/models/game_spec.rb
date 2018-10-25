@@ -48,6 +48,24 @@ RSpec.describe Game, type: :model do
     expect(game.get_player(game_player.id)).to eq(game_player)
   end
 
+  it 'setup? will return false if ships not setup.' do
+    game = Game.create
+    game_player_1 = game.get_player(game.computer_game_player_id)
+    game_player_2 = game.get_player(game.human_game_player_id)
+    ship_type = ShipType.create(name: 'a', size: 2)
+    expect(game.setup?).to be(false)
+  end
+
+  it 'setup? will return true if ships are setup.' do
+    game = Game.create
+    game_player_1 = game.get_player(game.computer_game_player_id)
+    game_player_2 = game.get_player(game.human_game_player_id)
+    ship_type = ShipType.create(name: 'a', size: 2)
+    Ship.create_on_grid(game_player_1, ship_type, ['B1', 'B2'])
+    Ship.create_on_grid(game_player_2, ship_type, ['C1', 'D1'])
+    expect(game.setup?).to be(true)
+  end
+
   it 'result will return nil if neither player has won yet' do
     game = Game.create
     game_player_1 = game.get_player(game.computer_game_player_id)

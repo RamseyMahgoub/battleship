@@ -1,18 +1,40 @@
-.ships {
+.game-container {
   display: flex;
   flex-direction: row;
+}
+
+.ships {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  justify-content: space-evenly;
+
+  .cell {
+    width: 1em;
+    height: 1em;
+
+    &__hit, &__sunk {
+      border-radius: 100%;
+      width: 0em;
+      height: 0em;
+      border: solid 0.3em red;
+    }
+  }
+}
+
+.ship {
+  margin-bottom: 1em;
 }
 
 .grids {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  flex: 1;
 }
 
 .grid {
   border: 1px solid grey;
+  margin: 1em;
 }
 
 .cell {
@@ -22,8 +44,18 @@
   justify-content: center;
   position: relative;
 
+  &--ship {
+    background-color: darkgray !important;
+  }
+
   &--sunk {
     background-color: lightcoral !important;
+  }
+
+  &--hit {
+    background: url(/hit.gif);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 
   &__sunk {
@@ -34,10 +66,10 @@
   }
 
   &__hit {
-    border-radius: 100%;
-    width: 0em;
-    height: 0em;
-    border: solid 0.6em red;
+    // border-radius: 100%;
+    // width: 0em;
+    // height: 0em;
+    // border: solid 0.6em red;
   }
 
   &__miss {
@@ -107,4 +139,23 @@
       }
     }
   }
+}
+
+.next-turn {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.player-container {
+  text-align: center;
+}
+
+.the-beach {
+  background-image: url(the-beach.png);
+  width: 200px;
+  height: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0 auto;
 }

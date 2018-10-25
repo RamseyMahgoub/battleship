@@ -19,6 +19,11 @@
     </div>
   </div>
 
+  <% if flash[:error] %>
+      <div id="alert">
+         <%= flash[:error] %> 
+      </div>
+  <% end %>
 
 
 <br>
