@@ -22,8 +22,11 @@
             { :method => :post, :class => 'cell cell--fireable'}
           ) %>
         <% else %>
-          <div class="cell cell--<%= cell.fetch(:state).to_s %>">
+          <div class="cell cell--<%= cell.fetch(:state).to_s %> <%= 'cell--latest' if cell.fetch(:latest_turn) && highlight_latest %>">
             <span class="cell__<%= cell.fetch(:state).to_s %>"></span>
+            <% if cell.fetch(:piece) %>
+              <span class="piece piece--<%= cell.fetch(:piece).to_s %>"></span>
+            <% end %>
           </div>
         <% end %>
       <% end %>

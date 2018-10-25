@@ -1,3 +1,11 @@
+$sunk-bg: repeating-linear-gradient(
+  53deg,
+  dimgray,
+  lightcoral 10px,
+  dimgray 10px,
+  lightcoral  20px
+);
+
 .game-container {
   display: flex;
   flex-direction: row;
@@ -17,6 +25,14 @@
       width: 0em;
       height: 0em;
       border: solid 0.3em red;
+    }
+
+    &--ship, &--hit {
+      background-color: darkgrey;
+    }
+
+    &--sunk {
+      background: $sunk-bg !important;
     }
   }
 }
@@ -44,30 +60,17 @@
   justify-content: center;
   position: relative;
 
-  &--ship {
-    background-color: darkgray !important;
+  &--latest {
+    z-index: 1;
+    box-shadow: 0px 0px 2em yellow;
   }
 
-  &--sunk {
-    background-color: lightcoral !important;
-  }
-
-  &--hit {
-    background-color: darkgray !important;
-  }
-
-  &__sunk {
+  &__sunk, &__hit {
     border-radius: 100%;
     width: 0em;
     height: 0em;
     border: solid 0.6em red;
-  }
-
-  &__hit {
-    border-radius: 100%;
-    width: 0em;
-    height: 0em;
-    border: solid 0.6em red;
+    z-index: 3;
   }
 
   &__miss {
@@ -93,7 +96,7 @@
         left: -10px;
         border-top: $target-border;
         border-left: $target-border;
-        z-index: 1;
+        z-index: 4;
       }
 
       &:after {
@@ -106,7 +109,7 @@
         right: -10px;
         border-top: $target-border;
         border-right: $target-border;
-        z-index: 1;
+        z-index: 4;
       }
 
       .cell--fire {
@@ -120,7 +123,7 @@
           left: -10px;
           border-bottom: $target-border;
           border-left: $target-border;
-          z-index: 1;
+          z-index: 4;
         }
         &:after {
           display: block;
@@ -132,7 +135,7 @@
           right: -10px;
           border-bottom: $target-border;
           border-right: $target-border;
-          z-index: 1;
+          z-index: 4;
         }
       }
     }
@@ -143,6 +146,7 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  width: 2em;
 }
 
 .player-container {
@@ -156,4 +160,67 @@
   background-size: contain;
   background-repeat: no-repeat;
   margin: 0 auto;
+}
+
+.piece {
+  $end-length: 2.5em;
+  $think: 2em;
+
+  display: block;
+  content: "";
+  position: absolute;
+  z-index: 2;
+  background-color: dimgray;
+
+  &--south {
+    width: $think;
+    height: $end-length;
+    bottom: -1px;
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+  }
+
+  &--north {
+    width: $think;
+    height: $end-length;
+    top: -1px;
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
+  }
+
+  &--east {
+    width: $end-length;
+    height: $think;
+    right: -1px;
+    border-top-left-radius: 100%;
+    border-bottom-left-radius: 100%;
+  }
+
+  &--west {
+    width: $end-length;
+    height: $think;
+    left: -1px;
+    border-top-right-radius: 100%;
+    border-bottom-right-radius: 100%;
+  }
+
+  &--horizontal {
+    width: calc(100% + 2px);
+    height: $think;
+    left: -1px;
+    right: -1px;
+  }
+
+  &--vertical {
+    width: $think;
+    height: calc(100% + 2px);
+    top: -1px;
+    bottom: -1px;
+  }
+}
+
+.cell--sunk {
+  .piece {
+    background: $sunk-bg !important;
+  }
 }

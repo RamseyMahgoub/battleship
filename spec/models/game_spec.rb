@@ -203,6 +203,25 @@ RSpec.describe Game, type: :model do
     expect(game_player_1.active_turn).to be(false)
   end
 
+  it 'can_change_turn? returns false when turn incomplete' do
+    game = Game.create
+    game_player_1 = game.get_player(game.computer_game_player_id)
+
+    expect(game.can_change_turn?).to be(false)
+  end
+
+  it 'can_change_turn? returns true when turn complete' do
+    game = Game.create
+    game_player_1 = game.get_player(game.computer_game_player_id)
+    game_player_2 = game.get_player(game.human_game_player_id)
+    ship_type = ShipType.create(name: 'a', size: 2)
+    Ship.create_on_grid(game_player_1, ship_type, ['B1', 'B2'])
+    ship = Ship.create_on_grid(game_player_2, ship_type, ['C1', 'D1'])
+    game.target('A8')
+
+    expect(game.can_change_turn?).to be(true)
+  end
+
   context 'AI targeting 1 ship of 2 cells' do
     let(:game) { Game.create(3) }
     let(:ship_type) { ShipType.create(name: 'a', size: 2) }

@@ -38,9 +38,13 @@ class GamePlayer < ApplicationRecord
     return false if target.targeted
 
     target.update(targeted: true)
-    update(turn_has_targeted: true)
+    update(turn_has_targeted: true, last_turn_cell_id: target.id)
 
     true
+  end
+
+  def previous_turn_cell
+    Cell.find(last_turn_cell_id) if last_turn_cell_id
   end
 
   private

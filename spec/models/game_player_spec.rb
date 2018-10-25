@@ -230,4 +230,12 @@ RSpec.describe GamePlayer, type: :model do
     game_player.receive_target('G5')
     expect(game_player.grid.find_cell_by_coord('G5').targeted).to be(true)
   end
+
+  it 'keeps track of the previous turns cell' do
+    game_player = GamePlayer.create_human_player(game)
+    expect(game_player.previous_turn_cell).to be(nil)
+    game_player.receive_target('G5')
+    cell = game_player.grid.find_cell_by_coord('G5')
+    expect(game_player.previous_turn_cell).to eq(cell)
+  end
 end

@@ -43,12 +43,16 @@ class Game < ApplicationRecord
     active = get_active_turn_player
     receiver = get_receive_turn_player
 
-    return false if !receiver.turn_has_targeted
+    return false if !can_change_turn?
 
     active.update(active_turn: false)
     receiver.update(active_turn: true, turn_has_targeted: false)
 
     true
+  end
+
+  def can_change_turn?
+    get_receive_turn_player.turn_has_targeted
   end
 
   def ai_coord_options

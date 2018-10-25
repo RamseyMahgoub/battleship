@@ -20,18 +20,18 @@
   <%= render partial: 'ships', locals: { ships: @human_ships, sunk_only: false } %>
   <div class="grids">
     <div>
-      <%= render partial: 'grid', locals: { grid: @human_grid, fireable: false } %>
+      <%= render partial: 'grid', locals: { grid: @human_grid, fireable: false, highlight_latest: !@can_change_turn } %>
       <div class="player-container">
         <h2>You</h2>
       </div>
     </div>
     <div class="next-turn">
-      <% if !@result %>
+      <% if !@result && @can_change_turn %>
         <%= link_to('Next turn', "/game/change_turn", { :method => :post }) %>
       <% end %>
     </div>
     <div>
-      <%= render partial: 'grid', locals: { grid: @comp_grid, fireable: true } %>
+      <%= render partial: 'grid', locals: { grid: @comp_grid, fireable: !@can_change_turn, highlight_latest: @can_change_turn } %>
       <div class="player-container">
         <h2>The Beach (Computer)</h2>
         <div class="the-beach"></div>

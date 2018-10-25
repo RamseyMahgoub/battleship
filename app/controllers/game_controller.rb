@@ -26,17 +26,22 @@ class GameController < ApplicationController
       {
         state: cell.state(true),
         coord: cell.coord,
+        latest_turn: human_player.previous_turn_cell == cell,
+        piece: (cell.ship_cell.piece if cell.state(true) == :ship || cell.state(true) == :sunk || cell.state(true) == :hit)
       }
     end
     @comp_grid = comp_player.grid.as_2d do |cell|
       {
         state: cell.state,
         coord: cell.coord,
-        url: "/game/fire/#{cell.coord}"
+        url: "/game/fire/#{cell.coord}",
+        latest_turn: comp_player.previous_turn_cell == cell,
+        piece: (cell.ship_cell.piece if cell.state == :sunk)
+
       }
     end
     @result = game.result
-
+    @can_change_turn = game.can_change_turn?
   end
 
   def fire
