@@ -44,19 +44,18 @@ body {
 }
 body {
   background:white;
-  padding-top: 5em;
   justify-content: center;
 }
 .typewriter h1 {
   font-size: 90px;
   color:black;
   font-family: 'Poppins', sans-serif;
-  overflow: hidden; 
-  border-right: .15em solid orange; 
+  overflow: hidden;
+  border-right: .15em solid orange;
   white-space: nowrap;
-  margin: 0 auto; 
-  letter-spacing: .15em; 
-  animation: 
+  margin: 0 auto;
+  letter-spacing: .15em;
+  animation:
     typing 3.5s steps(30, end),
     blink-caret .5s step-end infinite;
 }

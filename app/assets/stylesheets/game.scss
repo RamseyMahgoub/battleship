@@ -16,6 +16,15 @@ $sunk-bg: repeating-linear-gradient(
   flex-direction: column;
   width: 100%;
 
+  &--horizontal {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .ship {
+    display: block;
+  }
+
   .cell {
     width: 1em;
     height: 1em;
