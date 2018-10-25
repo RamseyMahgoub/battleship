@@ -71,6 +71,9 @@ $sunk-bg: repeating-linear-gradient(
     height: 0em;
     border: solid 0.6em red;
     z-index: 3;
+    background: url(/hit.gif);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 
   &__miss {

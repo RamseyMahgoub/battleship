@@ -1,6 +1,7 @@
 .grid {
   display: flex;
-  flex-direction: column
+  flex-direction: column;
+ 
 }
 
 .row {
@@ -9,6 +10,7 @@
 }
 
 .grid--setup {
+  text-align: center;
   .cell {
     height: 5em;
     width: 5em;
@@ -22,5 +24,56 @@
   
   select {
     width: 100%;
+    font-size: 30px
   }
+}
+
+.pickship {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  font-size: 50px;
+  
+}
+
+.shipname {
+  font-family: 'Courier New', Courier, monospace;
+
+}
+
+.shipsize{
+  color: red;
+  font-family: 'Courier New', Courier, monospace;
+  padding-left: 0;
+  margin-left: 0
+}
+
+.ship {
+  display: flex;
+  .shipsize {
+      padding-left: 35px;
+  }
+}
+
+.confirm{
+  text-align: center;
+}
+
+.button {
+  background-color:red;
+  border-radius: 25px;
+  color: white;
+  padding: 15px 30px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+  margin-right: 75px
+
+}
+
+.feelinglucky{
+  text-align: center;
+  padding-top: 30px;
+  font-family: 'Poppins', sans-serif;
+  color: red;
+  font-size: 30px
 }
