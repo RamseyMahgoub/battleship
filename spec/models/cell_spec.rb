@@ -93,6 +93,7 @@ RSpec.describe Cell, type: :model do
 
     let(:cell_with_no_ship) { game_player.grid.find_cell_by_coord('A1') }
     let(:cell_with_ship) { game_player.grid.find_cell_by_coord('B1') }
+    let(:cell_with_ship_2) { game_player.grid.find_cell_by_coord('B2') }
 
     before do
       # doing this comparison makes the test pass... the code works in rails console
@@ -126,13 +127,20 @@ RSpec.describe Cell, type: :model do
       end
 
       it 'state returns ":miss" if hit and no ship' do
-        cell_with_no_ship.targeted = true
+        cell_with_no_ship.update(targeted: true)
         expect(cell_with_no_ship.state(true)).to be(:miss)
       end
 
       it 'state returns ":hit" if hit and contains ship' do
-        cell_with_ship.targeted = true
+        cell_with_ship.update(targeted: true)
         expect(cell_with_ship.state(true)).to be(:hit)
+      end
+
+      it 'state returns ":sunk" if hit and contains a sunk ship' do
+        cell_with_ship.update(targeted: true)
+        cell_with_ship_2.update(targeted: true)
+        expect(cell_with_ship.state(true)).to be(:sunk)
+        expect(cell_with_ship_2.state(true)).to be(:sunk)
       end
     end
 
@@ -153,6 +161,13 @@ RSpec.describe Cell, type: :model do
       it 'state returns ":hit" if hit and contains ship' do
         cell_with_ship.targeted = true
         expect(cell_with_ship.state).to be(:hit)
+      end
+
+      it 'state returns ":sunk" if hit and contains a sunk ship' do
+        cell_with_ship.update(targeted: true)
+        cell_with_ship_2.update(targeted: true)
+        expect(cell_with_ship.state).to be(:sunk)
+        expect(cell_with_ship_2.state).to be(:sunk)
       end
     end
   end

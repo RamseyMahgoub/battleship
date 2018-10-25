@@ -9,13 +9,14 @@ body {
   font-size: 1rem;
 
   &__title_img {
+
     &--img {
     background-image: url("battleship2.png");
     background-repeat: no-repeat;
     height: 70vh;
     width: 100%;
     background-position: center;
-   
+    background-size: cover
 
     }
     &--title {
@@ -23,16 +24,50 @@ body {
      text-align: center;
      font-size: 40px
      }
+
+  }
+
+  &__button {
+    display: flex;
+     justify-content: center;
+
   }
 }
-
-.button {
-  background-color:red;
-  border-radius: 25px;
-  color: white;
+.buttons {
+  background-color:rgb(229, 76, 20);
+  border-radius: 50px;
+  color: black;
   padding: 15px 30px;
   cursor: pointer;
-  font-size: 20px;
-  margin-left: 20px;
+  font-size: 50px;
+
+}
+body {
+  background:white;
+  padding-top: 5em;
+  justify-content: center;
+}
+.typewriter h1 {
+  font-size: 90px;
+  color:black;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden; 
+  border-right: .15em solid orange; 
+  white-space: nowrap;
+  margin: 0 auto; 
+  letter-spacing: .15em; 
+  animation: 
+    typing 3.5s steps(30, end),
+    blink-caret .5s step-end infinite;
 }
 
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
+}

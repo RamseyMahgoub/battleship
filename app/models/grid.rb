@@ -2,7 +2,15 @@ class Grid < ApplicationRecord
   belongs_to :game_player
   has_many :cells
 
-  def self.create(game_player, size = 10)
+  def self.default_size
+    10
+  end
+
+  def self.create(game_player, size = self.default_size)
+    if size == nil
+      size = self.default_size
+    end
+    
     grid = super(game_player: game_player)
     grid.create_cells(size)
     grid

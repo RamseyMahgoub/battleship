@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_22_092453) do
+ActiveRecord::Schema.define(version: 2018_10_24_081925) do
 
   create_table "cells", force: :cascade do |t|
     t.boolean "targeted", default: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2018_10_22_092453) do
   create_table "games", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "uuid"
   end
 
   create_table "grids", force: :cascade do |t|
